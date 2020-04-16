@@ -15,7 +15,13 @@ class Chatter extends StatelessWidget {
           body1: TextStyle(color: Colors.black54),
         ),
       ),
-      home: WelcomeScreen(),
+      initialRoute: WelcomeScreen.routeName,
+      routes: {
+        WelcomeScreen.routeName: (context) => WelcomeScreen(),
+        RegistrationScreen.routeName: (context) => RegistrationScreen(),
+        LoginScreen.routeName: (context) => LoginScreen(),
+        ChatScreen.routeName: (context) => ChatScreen()
+      },
     );
   }
 }
