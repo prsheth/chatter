@@ -17,6 +17,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     with SingleTickerProviderStateMixin {
   //added mixin to provide extra capability to the class
   AnimationController controller;
+  //adding animation for using non linear/ curved animations
+  Animation animation;
 
   @override
   void initState() {
@@ -27,6 +29,19 @@ class _WelcomeScreenState extends State<WelcomeScreen>
       vsync: this, //required property to tell it which ticker to use
     );
 
+    animation = CurvedAnimation(
+      parent: controller,
+      curve: Curves.bounceOut, //CURVES ALWAYS GO FROM 0 TO 1 SO NO UPPER BOUNDS
+    ); // CurvedAnimation
+
+//    animation.addStatusListener((status) {
+//      if (status == AnimationStatus.completed) {
+//        controller.reverse(from: 1.0);
+//      } else if (status == AnimationStatus.dismissed) {
+//        controller.forward();
+//      }
+//    });
+
     controller.forward();
 
     //adding controller listener
@@ -36,9 +51,15 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red.withOpacity(controller.value),
+      backgroundColor: Colors.white,
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.0),
         child: Column(
@@ -51,13 +72,13 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   tag: 'logo',
                   child: Container(
                     child: Image.asset('images/logo.png'),
-                    height: 60.0,
+                    height: animation.value * 100, //exaggerate values
                   ),
                 ),
                 Text(
                   'Chatter',
                   style: TextStyle(
-                    fontSize: 45.0,
+                    fontSize: 30.0,
                     fontWeight: FontWeight.w900,
                   ),
                 ),
